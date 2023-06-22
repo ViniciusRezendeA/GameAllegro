@@ -1,5 +1,5 @@
 
-#include "./class/Bird.h"
+#include "./class/Player.h"
 #include "./class/Inputs.h"
 #include "./class/Tube.h"
 #include "./class/Background.h"
@@ -20,13 +20,6 @@ double setSpeed()
     return speed;
 }
 
-void start(const vector<GameObject *> &objectVector)
-{
-    for (auto it = objectVector.begin(); it != objectVector.end(); it++)
-    {
-        (*it)->start();
-    }
-}
 void update(const vector<GameObject *> &objectVector)
 {
     for (auto it = objectVector.begin(); it != objectVector.end(); it++)
@@ -84,7 +77,8 @@ int main()
         "img/1.png",
         "img/2.png",
         "img/3.png",
-        "img/bird.png",
+        "img/4.png",
+        "img/Player.png",
         "img/cano.png",
         "img/start_buton.png"};
 
@@ -100,19 +94,19 @@ int main()
 #pragma endregion
 #pragma region ObjectVector
     vector<GameObject *> objectVector;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i <= 3; i++)
     {
         objectVector.push_back(new Background(0, 0, 0.3 * (i + 1), 0, -1, 1, D_WIDHT, D_HEIGTH, imagePath[i]));
     }
-    StartMenu *btnMenu = new StartMenu(D_WIDHT, D_HEIGTH, imagePath[5]);
-    Bird *InitialBird = new Bird(Position(200, D_HEIGTH / 2), imagePath[3]);
-    Tube *tube = new Tube(Position(D_WIDHT + 2, -tube->randmWithLimit(40, 200)), imagePath[4]);
+    StartMenu *btnMenu = new StartMenu(D_WIDHT, D_HEIGTH, imagePath[6]);
+    Player *InitialPlayer = new Player(Position(200, D_HEIGTH / 2), imagePath[4],6);
+    Tube *tube = new Tube(Position(D_WIDHT + 2, -tube->randmWithLimit(40, 200)), imagePath[5]);
 
     objectVector.push_back(btnMenu);
 
 #pragma endregion
 #pragma region logic
-    start(objectVector);
+
     Inputs::init();
     while (!done)
     {
@@ -123,15 +117,15 @@ int main()
         }
         else if (btnMenu->checkBtnIsPress())
         {
-            objectVector.push_back(InitialBird);
+            objectVector.push_back(InitialPlayer);
             objectVector.push_back(tube);
 
             for (int i = 1; i < 6; i++)
             {
-                objectVector.push_back(new Tube(Position(D_WIDHT + 200 * i, - tube->randmWithLimit(40, 200)), imagePath[4]));
-                cout<<"BigPenis";
+                objectVector.push_back(new Tube(Position(D_WIDHT + 200 * i, - tube->randmWithLimit(40, 200)), imagePath[5]));
+                ;
             }
-                cout<<"MicroPenis";
+               
             btnMenu->changePressState(false);
         }
         al_wait_for_event(queue, &event);

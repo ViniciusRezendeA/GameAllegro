@@ -22,9 +22,7 @@ public:
         this->y = y;
         this->image = al_load_bitmap(path);
     }
-    void start()
-    {
-    }
+ 
     void changePressState(bool pressed)
     {
         this->pressed = pressed;

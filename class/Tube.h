@@ -24,10 +24,7 @@ public:
         this->setPosition(position);
         this->image = al_load_bitmap(path);
     };
-    void start()
-    {
-         srand(al_get_time());
-    }
+
     void move()
     {
 
