@@ -19,6 +19,9 @@ public:
                               this->getPosition().eixoX, this->getPosition().eixoY, 80, 80,
                               0);
     }
+     ALLEGRO_BITMAP * getBitMap(){
+        return this->image;
+    }
     Bird(Position position,const char *path)
     {
 
