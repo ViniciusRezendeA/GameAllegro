@@ -157,7 +157,7 @@ int main()
 
             for (int i = 1; i < 6; i++)
             {
-                TubeVector.push_back(new Tube(Position(D_WIDHT + 200 * i, -tube->randmWithLimit(40, 200)), imagePath[4]));
+                TubeVector.push_back(new Tube(Position(D_WIDHT + 200 * i, -tube->randmWithLimit(40, 200)), imagePath[5]));
             }
 
                

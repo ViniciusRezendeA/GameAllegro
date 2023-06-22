@@ -3,7 +3,7 @@
 #define Tube_H
 #include "GameObject.h"
 #include "Inputs.h"
-#include "Bird.h"
+#include "Player.h"
 class Tube : public GameObject
 {
 protected:
@@ -48,10 +48,10 @@ public:
         }
         move();
     }
-    bool collision(Bird *InitialBird)
+    bool collision(Player *InitialPlayer)
     {
 
-        if (InitialBird->getPosition().eixoY < this->getPosition().eixoY + 280 || InitialBird->getPosition().eixoY > al_get_bitmap_height(this->image) - 450 && this->getPosition().eixoX == 200)
+        if (InitialPlayer->getPosition().eixoY < this->getPosition().eixoY + 280 || InitialPlayer->getPosition().eixoY > al_get_bitmap_height(this->image) - 450 && this->getPosition().eixoX == 200)
         {
             cout<<this->getPosition().eixoX;
             return true;
