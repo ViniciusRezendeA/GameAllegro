@@ -22,9 +22,19 @@ double setSpeed()
 
 void update(const vector<GameObject *> &objectVector)
 {
+
     for (auto it = objectVector.begin(); it != objectVector.end(); it++)
     {
+
         (*it)->update();
+    }
+}
+
+void destroyTube(const vector<Tube *> &tubeVector)
+{
+    for (auto it = tubeVector.begin(); it != tubeVector.end(); it++)
+    {
+        delete *it;
     }
 }
 void destroy(const vector<GameObject *> &objectVector)
@@ -34,11 +44,35 @@ void destroy(const vector<GameObject *> &objectVector)
         delete *it;
     }
 }
+bool checkCollision(const vector<Tube *> &tubeVector, Player *InitialPlayer)
+{
+    for (auto it = tubeVector.begin(); it != tubeVector.end(); it++)
+    {
+        
 
+        if ((*it)->collision(InitialPlayer))
+        {
+            
+            return true;
+        }else{
+            (*it)->update();
+        }
+    }
+    return false;
+}
 void draw(const vector<GameObject *> &objectVector)
 {
 
     for (auto it = objectVector.begin(); it != objectVector.end(); it++)
+    {
+        (*it)->draw();
+    }
+    al_flip_display();
+}
+void drawTube(const vector<Tube *> &tubeVector)
+{
+
+    for (auto it = tubeVector.begin(); it != tubeVector.end(); it++)
     {
         (*it)->draw();
     }
@@ -94,6 +128,7 @@ int main()
 #pragma endregion
 #pragma region ObjectVector
     vector<GameObject *> objectVector;
+    vector<Tube *> TubeVector;
     for (int i = 0; i <= 3; i++)
     {
         objectVector.push_back(new Background(0, 0, 0.3 * (i + 1), 0, -1, 1, D_WIDHT, D_HEIGTH, imagePath[i]));
@@ -118,13 +153,13 @@ int main()
         else if (btnMenu->checkBtnIsPress())
         {
             objectVector.push_back(InitialPlayer);
-            objectVector.push_back(tube);
+            TubeVector.push_back(tube);
 
             for (int i = 1; i < 6; i++)
             {
-                objectVector.push_back(new Tube(Position(D_WIDHT + 200 * i, - tube->randmWithLimit(40, 200)), imagePath[5]));
-                ;
+                TubeVector.push_back(new Tube(Position(D_WIDHT + 200 * i, -tube->randmWithLimit(40, 200)), imagePath[4]));
             }
+
                
             btnMenu->changePressState(false);
         }
@@ -136,11 +171,22 @@ int main()
             break;
 
         case ALLEGRO_EVENT_TIMER:
-            update(objectVector);
-            draw(objectVector);
+        if(checkCollision(TubeVector, InitialPlayer)){
+           
+        }else{
+ update(objectVector);
 
+            draw(objectVector);
+            drawTube(TubeVector);
+        }
             al_add_timer_count(timer, 1);
             break;
+        }
+        if (checkCollision(TubeVector, InitialPlayer))
+        {
+            // done = true;
+        }else{
+            
         }
         Inputs::update(event);
     }
