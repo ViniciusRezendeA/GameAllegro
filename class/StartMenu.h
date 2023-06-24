@@ -22,7 +22,7 @@ public:
         this->y = y;
         this->image = al_load_bitmap(path);
     }
- 
+
     void changePressState(bool pressed)
     {
         this->pressed = pressed;
@@ -42,13 +42,15 @@ public:
         if (
             Inputs::getMousePosition().eixoX > D_HEIGTH / 2 - al_get_bitmap_height(this->image) && Inputs::getMousePosition().eixoX < D_HEIGTH)
         {
+
+            Inputs::setMousePosition(0, 0);
             this->iniciar = true;
             return;
         }
     }
     void draw()
     {
-        if (this->iniciar && !this->pressed) 
+        if (this->iniciar && !this->pressed)
         {
         }
         else

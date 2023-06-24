@@ -4,10 +4,12 @@
 #include "GameObject.h"
 #include "Inputs.h"
 #include "Player.h"
+using namespace std;
 class Tube : public GameObject
 {
 protected:
     ALLEGRO_BITMAP *image;
+    bool passou = false;
 
 public:
     void draw()
@@ -50,11 +52,55 @@ public:
     }
     bool collision(Player *InitialPlayer)
     {
-
-        if (InitialPlayer->getPosition().eixoY < this->getPosition().eixoY + 280 || InitialPlayer->getPosition().eixoY > al_get_bitmap_height(this->image) - 450 && this->getPosition().eixoX == 200)
+        //  97 x 854 px
+        // cano de cima 308
+        // cano de baixo 520
+        float collider[][2] = {{InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY},
+                               {InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)},
+                               {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY},
+                               {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)}};
+        collider;
+        for (int i = 0; i < 4; i++)
         {
-            cout<<this->getPosition().eixoX;
-            return true;
+
+            if (collider[i][0] < this->getPosition().eixoX + 92 && collider[i][0] > this->getPosition().eixoX)
+            {
+                if (collider[i][1] < this->getPosition().eixoY + 308 || collider[i][1] > this->getPosition().eixoY + 520)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    bool pointer(Player *InitialPlayer)
+    {
+        //  97 x 854 px
+        // cano de cima 308
+        // cano de baixo 520
+        float collider[][2] = {{InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY},
+                               {InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)},
+                               {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY},
+                               {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)}};
+        collider;
+        for (int i = 0; i < 4; i++)
+        {
+
+            if (collider[i][0] < this->getPosition().eixoX + 92 && collider[i][0] > this->getPosition().eixoX)
+            {
+                if (collider[i][1] < this->getPosition().eixoY + 308 || collider[i][1] > this->getPosition().eixoY + 520)
+                {
+                }
+                else
+                {
+                  
+                    return true;
+                    
+                }
+            }else{
+                return false;
+
+            }
         }
         return false;
     }
@@ -65,3 +111,8 @@ public:
 };
 
 #endif
+
+// desenvolver um componente
+// desenvolver um reciclerview
+// desenvolver um fragment
+// pode ser selecionado quantos componentes quiser;

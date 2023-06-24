@@ -191,6 +191,7 @@ public:
             break;
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
             Inputs::setMousePosition(event.mouse.x, event.mouse.y);
+          
             break;
         case ALLEGRO_EVENT_TIMER:
             Inputs::checkKeyStatus();

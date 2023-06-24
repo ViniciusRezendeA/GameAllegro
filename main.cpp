@@ -11,7 +11,8 @@ unsigned char Inputs::keys[ALLEGRO_KEY_MAX];
 #define D_BACKGROUND_RED 000
 #define D_BACKGROUND_GREEN 000
 #define D_BACKGROUND_BLUE 000
-
+int pontos = 0;
+bool restart = false;
 #pragma region default functions
 
 double setSpeed()
@@ -48,15 +49,17 @@ bool checkCollision(const vector<Tube *> &tubeVector, Player *InitialPlayer)
 {
     for (auto it = tubeVector.begin(); it != tubeVector.end(); it++)
     {
-        
 
         if ((*it)->collision(InitialPlayer))
         {
-            
             return true;
-        }else{
-            (*it)->update();
+            break;
         }
+        if ((*it)->pointer(InitialPlayer))
+        {
+            pontos++;
+        }
+        (*it)->update();
     }
     return false;
 }
@@ -88,6 +91,14 @@ void mustInit(bool isWorking, string errorMesage)
     }
     cout << "Erro não foi possivel inicializar " << errorMesage << endl;
 }
+void getTubes(vector<Tube *> &TubeVector, const char *imagePath[])
+{
+    Tube *tube = new Tube(Position(D_WIDHT + 2, -tube->randmWithLimit(40, 200)), imagePath[5]);
+    for (int i = 1; i <= 6; i++)
+    {
+        TubeVector.push_back(new Tube(Position(D_WIDHT + 200 * i, -tube->randmWithLimit(40, 200)), imagePath[5]));
+    }
+}
 int main()
 {
 #pragma region Allegro init
@@ -114,7 +125,8 @@ int main()
         "img/4.png",
         "img/Player.png",
         "img/cano.png",
-        "img/start_buton.png"};
+        "img/start_buton.png",
+        "img/restart_button.png"};
 
     mustInit(queue, "quee");
     mustInit(timer, "timer");
@@ -124,7 +136,7 @@ int main()
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_mouse_event_source());
-    al_start_timer(timer);
+
 #pragma endregion
 #pragma region ObjectVector
     vector<GameObject *> objectVector;
@@ -134,35 +146,35 @@ int main()
         objectVector.push_back(new Background(0, 0, 0.3 * (i + 1), 0, -1, 1, D_WIDHT, D_HEIGTH, imagePath[i]));
     }
     StartMenu *btnMenu = new StartMenu(D_WIDHT, D_HEIGTH, imagePath[6]);
-    Player *InitialPlayer = new Player(Position(200, D_HEIGTH / 2), imagePath[4],6);
+    Player *InitialPlayer = new Player(Position(200, D_HEIGTH / 2), imagePath[4], 6);
     Tube *tube = new Tube(Position(D_WIDHT + 2, -tube->randmWithLimit(40, 200)), imagePath[5]);
-
+    StartMenu *btnMenurestart = new StartMenu(D_WIDHT, D_HEIGTH, imagePath[7]);
+    ;
     objectVector.push_back(btnMenu);
 
 #pragma endregion
 #pragma region logic
 
     Inputs::init();
+
+    al_start_timer(timer);
+
     while (!done)
     {
         if (btnMenu->getStart() && !btnMenu->checkBtnIsPress())
         {
             delete btnMenu;
+
             objectVector.pop_back();
         }
         else if (btnMenu->checkBtnIsPress())
         {
             objectVector.push_back(InitialPlayer);
-            TubeVector.push_back(tube);
 
-            for (int i = 1; i < 6; i++)
-            {
-                TubeVector.push_back(new Tube(Position(D_WIDHT + 200 * i, -tube->randmWithLimit(40, 200)), imagePath[5]));
-            }
-
-               
+            getTubes(TubeVector, imagePath);
             btnMenu->changePressState(false);
         }
+
         al_wait_for_event(queue, &event);
         switch (event.type)
         {
@@ -171,23 +183,55 @@ int main()
             break;
 
         case ALLEGRO_EVENT_TIMER:
-        if(checkCollision(TubeVector, InitialPlayer)){
-           
-        }else{
- update(objectVector);
+            if (restart)
+            {
+               
+                if (btnMenurestart->getStart() && !btnMenurestart->checkBtnIsPress())
+                {
+                    
+                    delete btnMenurestart;
 
-            draw(objectVector);
-            drawTube(TubeVector);
-        }
-            al_add_timer_count(timer, 1);
+                    objectVector.pop_back();
+                }
+                else if (btnMenurestart->checkBtnIsPress())
+                {
+                    restart = false;
+                    objectVector.push_back(InitialPlayer);
+
+                    getTubes(TubeVector, imagePath);
+                    btnMenurestart->changePressState(false);
+                }
+            }
+            if (checkCollision(TubeVector, InitialPlayer))
+            {
+
+               
+                cout << pontos / 31;
+                destroyTube(TubeVector);
+                for (int i = 1; i <= 6; i++)
+                {
+                    TubeVector.pop_back();
+                }
+
+                objectVector.pop_back();
+                btnMenurestart = new  StartMenu(D_WIDHT, D_HEIGTH, imagePath[7]);
+                objectVector.push_back(btnMenurestart);
+                restart = true;
+                pontos = 0;
+                draw(objectVector);
+                
+            }
+            else
+            {
+
+                draw(objectVector);
+                drawTube(TubeVector);
+            }
+
+            update(objectVector);
             break;
         }
-        if (checkCollision(TubeVector, InitialPlayer))
-        {
-            // done = true;
-        }else{
-            
-        }
+
         Inputs::update(event);
     }
 
