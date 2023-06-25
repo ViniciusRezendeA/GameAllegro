@@ -27,6 +27,7 @@ public:
   float velocidadeAtual = 0;
   float gravidade = 9.8;
   float velocidade;
+  KeyCode jumpKeyCode = 1;
 
 public:
   /*
@@ -68,8 +69,13 @@ NAME : Player(Position position,const char *path,float velocidade)
   {
 
     Position newPosition = this->getPosition();
-    if (Inputs::checkKeyDown(ALLEGRO_KEY_SPACE))
+    if (Inputs::checkKeyDown(this->jumpKeyCode) || Inputs::checkKeyDown(ALLEGRO_KEY_SPACE) )
     {
+      // tabela ASCII 65 a 90
+      // Allogro 1 a 26
+      //
+      this->jumpKeyCode = this->randmWithLimit(1, 26);
+
       this->velocidadeAtual = this->velocidadeAtual - this->velocidade;
     }
     this->velocidadeAtual = this->velocidadeAtual + this->gravidade / 60.0;

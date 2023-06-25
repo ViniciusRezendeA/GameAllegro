@@ -8,7 +8,6 @@ class GameObject
 protected:
     Position _position = Position(0, 0);
     const char *path;
-    
 
 public:
     Position getPosition()
@@ -19,25 +18,30 @@ public:
     {
         this->_position = newPosition;
     }
-    const char * getImagePath()
+    const char *getImagePath()
     {
         return this->path;
     };
 
-    void setImagePath(const char* path)
+    void setImagePath(const char *path)
     {
         this->path = path;
     }
     GameObject() = default;
-    GameObject(Position position, const char* path)
+    GameObject(Position position, const char *path)
     {
         this->setPosition(position);
         this->setImagePath(path);
     };
-   
+    int randmWithLimit(int min, int max)
+    {
+
+        int alNumber = rand();
+        int result = alNumber % (max - min) + min;
+        return result;
+    }
     virtual void draw() = 0;
     virtual void update() = 0;
-    
 };
 
 #endif

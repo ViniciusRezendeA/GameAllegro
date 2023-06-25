@@ -35,13 +35,7 @@ public:
         newPosition.eixoX = newPosition.eixoX - 3;
         this->setPosition(newPosition);
     }
-    int randmWithLimit(int min, int max)
-    {
 
-        int alNumber = rand();
-        int result = alNumber % (max - min) + min;
-        return result;
-    }
     void update()
     {
         if (this->getPosition().eixoX < -400)
@@ -86,20 +80,20 @@ public:
         for (int i = 0; i < 4; i++)
         {
 
-            if (collider[i][0] < this->getPosition().eixoX + 92 && collider[i][0] > this->getPosition().eixoX)
+            if (collider[i][0] < this->getPosition().eixoX + 92 && collider[i][0] > this->getPosition().eixoX + 10)
             {
                 if (collider[i][1] < this->getPosition().eixoY + 308 || collider[i][1] > this->getPosition().eixoY + 520)
                 {
                 }
                 else
                 {
-                  
-                    return true;
-                    
-                }
-            }else{
-                return false;
 
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
         return false;

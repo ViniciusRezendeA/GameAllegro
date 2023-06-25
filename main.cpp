@@ -4,6 +4,7 @@
 #include "./class/Tube.h"
 #include "./class/Background.h"
 #include "./class/StartMenu.h"
+#include "./class/Pointer.h"
 using namespace std;
 
 ALLEGRO_MOUSE_STATE Inputs::state;
@@ -12,7 +13,6 @@ unsigned char Inputs::keys[ALLEGRO_KEY_MAX];
 #define D_BACKGROUND_GREEN 000
 #define D_BACKGROUND_BLUE 000
 int pontos = 0;
-bool restart = false;
 #pragma region default functions
 
 double setSpeed()
@@ -108,6 +108,7 @@ int main()
     mustInit(al_install_keyboard(), "al_install_keyboard");
     mustInit(al_install_mouse(), "al_install_mouse");
     mustInit(al_init_image_addon(), "al_init_image_addon");
+    mustInit(al_init_font_addon(), "al_init_image_addon");
 
     double speed = setSpeed();
     bool done = false;
@@ -149,7 +150,8 @@ int main()
     Player *InitialPlayer = new Player(Position(200, D_HEIGTH / 2), imagePath[4], 6);
     Tube *tube = new Tube(Position(D_WIDHT + 2, -tube->randmWithLimit(40, 200)), imagePath[5]);
     StartMenu *btnMenurestart = new StartMenu(D_WIDHT, D_HEIGTH, imagePath[7]);
-    ;
+    Pointer *qPontos = new Pointer(al_map_rgb(255, 255, 255), Position(50, 50), "pontuação %d");
+    Pointer *Letra = new Pointer(al_map_rgb(255, 255, 255), Position(D_WIDHT / 2, 50), "%c");
     objectVector.push_back(btnMenu);
 
 #pragma endregion
@@ -183,52 +185,32 @@ int main()
             break;
 
         case ALLEGRO_EVENT_TIMER:
-            if (restart)
-            {
-               
-                if (btnMenurestart->getStart() && !btnMenurestart->checkBtnIsPress())
-                {
-                    
-                    delete btnMenurestart;
 
-                    objectVector.pop_back();
-                }
-                else if (btnMenurestart->checkBtnIsPress())
-                {
-                    restart = false;
-                    objectVector.push_back(InitialPlayer);
-
-                    getTubes(TubeVector, imagePath);
-                    btnMenurestart->changePressState(false);
-                }
-            }
             if (checkCollision(TubeVector, InitialPlayer))
             {
-
-               
-                cout << pontos / 31;
                 destroyTube(TubeVector);
                 for (int i = 1; i <= 6; i++)
                 {
                     TubeVector.pop_back();
                 }
-
+                InitialPlayer->velocidadeAtual = 0;
+                InitialPlayer->jumpKeyCode = 1;
                 objectVector.pop_back();
-                btnMenurestart = new  StartMenu(D_WIDHT, D_HEIGTH, imagePath[7]);
-                objectVector.push_back(btnMenurestart);
-                restart = true;
+                btnMenu = new StartMenu(D_WIDHT, D_HEIGTH, imagePath[7]);
+                objectVector.push_back(btnMenu);
                 pontos = 0;
-                draw(objectVector);
-                
-            }
-            else
-            {
-
-                draw(objectVector);
-                drawTube(TubeVector);
             }
 
+            draw(objectVector);
+            drawTube(TubeVector);
+
+            Letra->setQPointer(InitialPlayer->jumpKeyCode + 64);
+            qPontos->setQPointer(pontos / 15);
+            Letra->draw();
+            qPontos->draw();
+            al_flip_display();
             update(objectVector);
+
             break;
         }
 
