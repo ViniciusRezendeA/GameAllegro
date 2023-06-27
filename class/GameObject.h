@@ -7,7 +7,7 @@ class GameObject
 {
 protected:
     Position _position = Position(0, 0);
-    ALLEGRO_COLOR _backgroundColor;
+    const char *path;
 
 public:
     Position getPosition()
@@ -18,26 +18,30 @@ public:
     {
         this->_position = newPosition;
     }
-    ALLEGRO_COLOR getBackgroundColor()
+    const char *getImagePath()
     {
-        return this->_backgroundColor;
+        return this->path;
     };
 
-    void setBackgroundColor(ALLEGRO_COLOR newBackgroundColor)
+    void setImagePath(const char *path)
     {
-        this->_backgroundColor = newBackgroundColor;
+        this->path = path;
     }
     GameObject() = default;
-    GameObject(Position position, ALLEGRO_COLOR backgroundColor)
+    GameObject(Position position, const char *path)
     {
         this->setPosition(position);
-        this->setBackgroundColor(backgroundColor);
+        this->setImagePath(path);
     };
-   
+    int randmWithLimit(int min, int max)
+    {
+
+        int alNumber = rand();
+        int result = alNumber % (max - min) + min;
+        return result;
+    }
     virtual void draw() = 0;
-    virtual void start() = 0;
     virtual void update() = 0;
-    
 };
 
 #endif

@@ -1,6 +1,20 @@
-
 #ifndef Background_H
 #define Background_H
+/*
+ * FILENAME : Background.h
+ * DESCRIPTION : Responsavel pela criação do Background
+ *
+ * PUBLIC FUNCTIONS :
+ * ~Background()
+ * void update()
+ * void draw()
+ * Background(float x, float y, float velX, float velY, int dirX, int dirY, int width, int height, const char *path)
+ * NOTES :
+ *
+ *
+ * AUTHOR : Vinicius Rezende
+ * START DATE : 22 Jun 23
+ */
 
 class Background : public GameObject
 {
@@ -17,7 +31,23 @@ protected:
     ALLEGRO_BITMAP *image;
 
 public:
-    Background(float x, float y, float velX, float velY, int dirX, int dirY, int width, int height,const char *path)
+    /*
+     NAME :  Background(float x, float y, float velX, float velY, int dirX, int dirY, int width, int height, const char *path)
+     * DESCRIPTION : construtor da classe Background
+     * INPUTS :
+     * PARAMETERS :
+     * float x: posição da imagem no eixo X
+     * float y: posição da imagem no eixo Y
+     * float velX: velocidade da imagem no eixo X
+     * float velY:velocidade da imagem no eixo Y
+     * int dirX: direção da imagem no eixo X
+     * int dirY: direção da imagem no eixo Y
+     * int width: tamanho da imagem
+     * int height: altura da imagem
+     * const char *path: camimho para imagem
+     * RETURN :
+     */
+    Background(float x, float y, float velX, float velY, int dirX, int dirY, int width, int height, const char *path)
     {
 
         this->x = x;
@@ -30,9 +60,15 @@ public:
         this->height = height;
         this->image = al_load_bitmap(path);
     }
-    void start()
-    {
-    }
+
+    /*
+    NAME : void update()
+    * DESCRIPTION : Função para atualizar a posição da imagem de acordo com a veloacidade e a direção
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
     void update()
     {
         this->x += this->velX * this->dirX;
@@ -41,6 +77,14 @@ public:
             this->x = 0;
         }
     }
+    /*
+    NAME : void draw()
+    * DESCRIPTION : responsavel pela exibição do background
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
     void draw()
     {
 
@@ -56,7 +100,16 @@ public:
                                   0);
         }
     }
-    ~Background(){
+    /**
+    NAME : ~Background()
+    * DESCRIPTION : responsavel por destroir o bitmap do background
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
+    ~Background()
+    {
         al_destroy_bitmap(this->image);
     }
 };
