@@ -5,7 +5,7 @@
 
 /*
  * FILENAME : Pointer.h
- * DESCRIPTION : Responsavel pela criação do Ponteiro 
+ * DESCRIPTION : Responsavel pela criação do Ponteiro
  *
  * PUBLIC FUNCTIONS :
  * ~Pointer()
@@ -21,23 +21,52 @@
 
 class Pointer : public GameObject
 {
-    protected:
-        int qPointer;
-        ALLEGRO_COLOR letterColor;
-        ALLEGRO_FONT *font =  al_create_builtin_font();
-        const char* text;
-    public:
-    Pointer(ALLEGRO_COLOR letterColor, Position position, const char* text){
+protected:
+    int qPointer;
+    ALLEGRO_COLOR letterColor;
+    ALLEGRO_FONT *font = al_create_builtin_font();
+    const char *text;
+
+public:
+    /*
+    NAME : Pointer(ALLEGRO_COLOR letterColor, Position position, const char* text)
+    * DESCRIPTION : construtor do Pointer
+    * INPUTS :
+    * PARAMETERS :
+    * ALLEGRO_COLOR letterColor: cor do texto
+    * Position position: posição do texto
+    * const char* text: texto a ser exibido
+    * RETURN :
+    */
+    Pointer(ALLEGRO_COLOR letterColor, Position position, const char *text)
+    {
         this->letterColor = letterColor;
         this->setPosition(position);
         this->text = text;
     }
+    /*
+    NAME : void update()
+    * DESCRIPTION : responsavel pela atualização do contador de pontos
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
     void update()
     {
 
         draw();
     }
-    void setQPointer(int q){
+    /*
+    NAME : void update()
+    * DESCRIPTION : responsavel por setar o valor dos pontos
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
+    void setQPointer(int q)
+    {
         this->qPointer = q;
     }
     /*
@@ -50,9 +79,18 @@ class Pointer : public GameObject
     */
     void draw()
     {
-        al_draw_textf(this->font,this->letterColor,this->getPosition().eixoX,this->getPosition().eixoY,0,this->text,qPointer);
+        al_draw_textf(this->font, this->letterColor, this->getPosition().eixoX, this->getPosition().eixoY, 0, this->text, qPointer);
     }
-    ~Pointer(){
+    /*
+NAME : ~Pointer()
+* DESCRIPTION : responsavel pela destruição do bitmap
+* INPUTS :
+* PARAMETERS :
+*
+* RETURN :
+*/
+    ~Pointer()
+    {
         al_destroy_font(this->font);
     }
 };

@@ -5,6 +5,24 @@
 #include "Inputs.h"
 #include "Player.h"
 using namespace std;
+/*
+ * FILENAME : Tube.h
+ * DESCRIPTION : Responsavel pela criação do obstaculo
+ *
+ * PUBLIC FUNCTIONS :
+ * ~Tube()
+ * void update()
+ * void draw()
+ * void move()
+ * bool collision(Player *InitialPlayer)
+ * bool pointer(Player *InitialPlayer)
+ * Tube(Position position, const char *path)
+ * NOTES :
+ *
+ *
+ * AUTHOR : Vinicius Rezende
+ * START DATE : 22 Jun 23
+ */
 class Tube : public GameObject
 {
 protected:
@@ -12,6 +30,14 @@ protected:
     bool passou = false;
 
 public:
+    /*
+       NAME : void draw()
+       * DESCRIPTION : responsavel pela exibição do player na tela
+       * INPUTS :
+       * PARAMETERS :
+       *
+       * RETURN :
+       */
     void draw()
     {
         al_draw_bitmap(this->image, this->getPosition().eixoX, this->getPosition().eixoY, 0);
@@ -20,6 +46,17 @@ public:
     {
         return this->image;
     }
+
+    /*
+    NAME : Tube(Position position, const char *path)
+    * DESCRIPTION : construtor do Tube
+    * INPUTS :
+    * PARAMETERS :
+    * Position position: posição do player
+    * const char *path: caminho da imagem do player
+    * RETURN :
+    */
+
     Tube(Position position, const char *path)
     {
 
@@ -27,7 +64,14 @@ public:
         this->image = al_load_bitmap(path);
         this->setImagePath(path);
     };
-
+    /*
+    NAME : void move()
+    * DESCRIPTION : responsavel por aplicar a fisica e simular a movimentação do tubo
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
     void move()
     {
 
@@ -36,6 +80,14 @@ public:
         this->setPosition(newPosition);
     }
 
+    /*
+        NAME : void update()
+        * DESCRIPTION : responsavel pela atualização da posição do tubo
+        * INPUTS :
+        * PARAMETERS :
+        *
+        * RETURN :
+    */
     void update()
     {
         if (this->getPosition().eixoX < -400)
@@ -44,16 +96,21 @@ public:
         }
         move();
     }
+    /*
+        NAME : collision(Player *InitialPlayer)
+        * DESCRIPTION : responsavel por conferir se o jogador colidiu com o tubo
+        * INPUTS :
+        * PARAMETERS :  Player *InitialPlayer
+        *
+        * RETURN : boleam
+    */
     bool collision(Player *InitialPlayer)
     {
-        //  97 x 854 px
-        // cano de cima 308
-        // cano de baixo 520
+
         float collider[][2] = {{InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY},
                                {InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)},
                                {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY},
                                {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)}};
-        collider;
         for (int i = 0; i < 4; i++)
         {
 
@@ -67,16 +124,22 @@ public:
         }
         return false;
     }
+    /*
+    NAME : pointer(Player *InitialPlayer)
+    * DESCRIPTION : responsavel por conferir se o jogador marcou ponto
+    * INPUTS :
+    * PARAMETERS :  Player
+    *
+    * RETURN : boleam
+    */
     bool pointer(Player *InitialPlayer)
     {
-        //  97 x 854 px
-        // cano de cima 308
-        // cano de baixo 520
+
         float collider[][2] = {{InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY},
                                {InitialPlayer->getPosition().eixoX, InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)},
                                {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY},
                                {InitialPlayer->getPosition().eixoX + al_get_bitmap_width(InitialPlayer->image), InitialPlayer->getPosition().eixoY + al_get_bitmap_height(InitialPlayer->image)}};
-        collider;
+
         for (int i = 0; i < 4; i++)
         {
 
@@ -98,15 +161,18 @@ public:
         }
         return false;
     }
-    void destroy()
+    /*
+    NAME : ~Tube()
+    * DESCRIPTION : responsavel por destroir o bitmap do tubo
+    * INPUTS :
+    * PARAMETERS :
+    *
+    * RETURN :
+    */
+    ~Tube()
     {
         al_destroy_bitmap(this->image);
     }
 };
 
 #endif
-
-// desenvolver um componente
-// desenvolver um reciclerview
-// desenvolver um fragment
-// pode ser selecionado quantos componentes quiser;
