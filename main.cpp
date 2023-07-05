@@ -1,12 +1,28 @@
-
+using namespace std;
 #include "./class/Player.h"
 #include "./class/Inputs.h"
 #include "./class/Tube.h"
 #include "./class/Background.h"
 #include "./class/StartMenu.h"
 #include "./class/Pointer.h"
-using namespace std;
-
+/*
+ * FILENAME : main.cpp
+ * DESCRIPTION : Responsavel pela criação do jogo
+ *
+ * PUBLIC FUNCTIONS :
+ * ~Tube()
+ * void update()
+ * void draw()
+ * void move()
+ * bool collision(Player *InitialPlayer)
+ * bool pointer(Player *InitialPlayer)
+ * Tube(Position position, const char *path)
+ * NOTES :
+ *
+ *
+ * AUTHOR : Vinicius Rezende
+ * START DATE : 22 Jun 23
+ */
 ALLEGRO_MOUSE_STATE Inputs::state;
 unsigned char Inputs::keys[ALLEGRO_KEY_MAX];
 #define D_BACKGROUND_RED 000
@@ -14,13 +30,27 @@ unsigned char Inputs::keys[ALLEGRO_KEY_MAX];
 #define D_BACKGROUND_BLUE 000
 int pontos = 0;
 #pragma region default functions
-
+/*
+NAME :setSpeed()
+* DESCRIPTION : responsavel por settar a velocidade que o timer ira correr
+* INPUTS :
+* PARAMETERS :
+*
+* RETURN : speed: velocidade do timer
+*/
 double setSpeed()
 {
     double speed = 1.0 / 60;
     return speed;
 }
-
+/*
+NAME : void update(const vector<GameObject *> &objectVector)
+* DESCRIPTION : responsavel pela atualização dos GameObject
+* INPUTS :
+* PARAMETERS :
+*   const vector<GameObject *> &objectVector: vetor de GameObject
+* RETURN :
+*/
 void update(const vector<GameObject *> &objectVector)
 {
 
@@ -30,7 +60,14 @@ void update(const vector<GameObject *> &objectVector)
         (*it)->update();
     }
 }
-
+/*
+NAME : void destroyTube(const vector<Tube *> &tubeVector)
+* DESCRIPTION : responsavel pela destruição dos bitmaps do tubes
+* INPUTS :
+* PARAMETERS :
+*const vector<Tube *> &tubeVector: vetor de Tube
+* RETURN :
+*/
 void destroyTube(const vector<Tube *> &tubeVector)
 {
     for (auto it = tubeVector.begin(); it != tubeVector.end(); it++)
@@ -38,6 +75,14 @@ void destroyTube(const vector<Tube *> &tubeVector)
         delete *it;
     }
 }
+/*
+NAME : void destroy(const vector<GameObject *> &objectVector)
+* DESCRIPTION : responsavel pela destruição dos bitmaps do GameObject
+* INPUTS :
+* PARAMETERS :
+*const vector<GameObject *> &objectVector: vetor de GameObject
+* RETURN :
+*/
 void destroy(const vector<GameObject *> &objectVector)
 {
     for (auto it = objectVector.begin(); it != objectVector.end(); it++)
@@ -45,6 +90,16 @@ void destroy(const vector<GameObject *> &objectVector)
         delete *it;
     }
 }
+/*
+NAME : checkCollision(const vector<Tube *> &tubeVector, Player *InitialPlayer)
+* DESCRIPTION : responsavel por fazer a checagem se o player colidiu com algum tubo ou se passou
+* INPUTS :
+* PARAMETERS :
+*const vector<Tube *> &tubeVector : vetor de Tube
+Player *InitialPlayer: player
+* RETURN :
+    caso true o jogar colidiu caso false fez um ponto
+*/
 bool checkCollision(const vector<Tube *> &tubeVector, Player *InitialPlayer)
 {
     for (auto it = tubeVector.begin(); it != tubeVector.end(); it++)
@@ -63,6 +118,14 @@ bool checkCollision(const vector<Tube *> &tubeVector, Player *InitialPlayer)
     }
     return false;
 }
+/*
+    NAME : draw(const vector<GameObject *> &objectVector)
+    * DESCRIPTION : responsavel pela exibição dos gameObject na tela
+    * INPUTS :
+    * PARAMETERS :
+    *const vector<GameObject *> &objectVector : vetor de GameObject
+    * RETURN :
+    */
 void draw(const vector<GameObject *> &objectVector)
 {
 
@@ -72,6 +135,14 @@ void draw(const vector<GameObject *> &objectVector)
     }
     al_flip_display();
 }
+/*
+    NAME : void drawTube(const vector<Tube *> &tubeVector)
+    * DESCRIPTION : responsavel pela exibição dos tubos na tela
+    * INPUTS :
+    * PARAMETERS :
+    *const vector<Tube *> &tubeVector : vetor de Tube
+    * RETURN :
+    */
 void drawTube(const vector<Tube *> &tubeVector)
 {
 
@@ -83,6 +154,15 @@ void drawTube(const vector<Tube *> &tubeVector)
 }
 
 #pragma endregion
+/*
+    NAME : void mustInit(bool isWorking, string errorMesage)
+    * DESCRIPTION : responsavel por conferir se as instancias estão funcioando corretamente 
+    * INPUTS :
+    * PARAMETERS :
+    * bool isWorking: retorno da função
+    * string errorMesage: mensagem de erro a ser exibida
+    * RETURN :
+    */
 void mustInit(bool isWorking, string errorMesage)
 {
     if (isWorking)
@@ -91,14 +171,33 @@ void mustInit(bool isWorking, string errorMesage)
     }
     cout << "Erro não foi possivel inicializar " << errorMesage << endl;
 }
+/*
+    NAME : void getTubes(vector<Tube *> &TubeVector, const char *imagePath[])
+    * DESCRIPTION : responsavel por popular o vector<Tube>
+    * INPUTS :
+    * PARAMETERS :
+    * vector<Tube *> &TubeVector: vetor a ser populado
+    * const char *imagePath[]: endereço das imagens 
+    * RETURN :
+    */
 void getTubes(vector<Tube *> &TubeVector, const char *imagePath[])
 {
     Tube *tube = new Tube(Position(D_WIDHT + 2, -tube->randmWithLimit(40, 200)), imagePath[5]);
     for (int i = 1; i <= 6; i++)
     {
-        TubeVector.push_back(new Tube(Position(D_WIDHT + 200 * i, -tube->randmWithLimit(40, 200)), imagePath[5]));
+        TubeVector.push_back(new Tube(Position(D_WIDHT + 270 * i, -tube->randmWithLimit(40, 200)), imagePath[5]));
     }
 }
+/*
+    NAME : int main()
+    * DESCRIPTION :responsavel por criar o jogo
+    * INPUTS :
+    * PARAMETERS :
+    * 
+    * RETURN :
+    * 1 para algo errado 
+    * 0 para funcioando 
+    */
 int main()
 {
 #pragma region Allegro init
